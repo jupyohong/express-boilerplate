@@ -18,17 +18,17 @@
   "dependencies": {
     "aws-sdk": "^2.925.0",
     "axios": "^0.22.0",
+    "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-swagger-generator": "^1.1.17",
     "formidable": "^1.2.2",
     "joi": "^17.4.2",
-    "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "mysql2": "^2.2.5",
     "redis": "^3.1.2",
     "sharp": "^0.29.1",
-    "xmldoc": "^1.1.2"
+    "uuid": "^8.3.2"
   }
 }

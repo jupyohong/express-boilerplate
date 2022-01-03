@@ -10,10 +10,10 @@ module.exports = {
   },
   extends: ['plugin:prettier/recommended'],
   plugins: ['prettier'],
-  ignorePatterns: ['xmldoc_2.2.4.js'],
+  ignorePatterns: [],
   rules: {
     'no-console': 'off',
-    quotes: [2, 'single'],
+    quotes: [2, 'single', { allowTemplateLiterals: true }],
     'prettier/prettier': [
       'error',
       {

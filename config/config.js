@@ -1,15 +1,13 @@
-exports.S3_TARGET = {};
-exports.RESIZE_FOLDER = [];
-exports.AUDIO_EXT = ['.mp4', '.m4a'];
-exports.IMAGE_EXT = [
-  '.jpeg',
-  '.heic',
-  '.jpg',
-  '.png',
-  '.gif',
-  '.tiff',
-  '.avif',
-  '.heif',
+const REDIS_TTL = 60 * 60 * 24 * 3; // 3 days
+const RESIZE_FOLDER = [];
+const RESIZE_OPTION = [
+  { name: 'w100', width: 100 },
+  { name: 'w250', width: 250 },
+  { name: 'w500', width: 500 },
 ];
-exports.STAFF_EMAIL = ['cc@coconutsilo.com'];
-exports.REDIS_TTL = 60 * 60 * 24 * 3; // 3 days
+
+module.exports = {
+  REDIS_TTL,
+  RESIZE_FOLDER,
+  RESIZE_OPTION,
+};

@@ -1,20 +1,15 @@
+const knex = require('../database/knex');
+
 module.exports = function asyncWrapper(fn) {
   return async function (req, res, next) {
-    const { dbPool } = req.app;
-    const conn = await dbPool.getConnection();
     try {
-      await conn.beginTransaction();
-      req.conn = conn;
+      req.trx = await knex.transaction();
       await fn(req, res, next);
-      await conn.commit();
-      next();
+      await req.trx.commit();
+      return next();
     } catch (error) {
-      await conn.rollback();
-      // console.error(error);
-      next(error);
-      // next(error);
-    } finally {
-      conn.release();
+      await req.trx.rollback();
+      return next(error);
     }
   };
 };

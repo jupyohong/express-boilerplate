@@ -6,9 +6,15 @@ function getAllRoutes(dir, fileArray = []) {
   files.forEach(file => {
     const currPath = path.join(dir, file);
     if (fs.statSync(currPath).isDirectory()) {
-      fileArray = getAllFiles(currPath, fileArray);
+      fileArray = getAllRoutes(currPath, fileArray);
     } else {
-      fileArray.push(currPath);
+      const isSwaggerRelated = file.split('.').reduce((acc, cur) => {
+        if (cur === 'router' || cur === 'swagger') acc += 1;
+        return acc;
+      }, 0);
+      if (isSwaggerRelated) {
+        fileArray.push(currPath);
+      }
     }
   });
   return fileArray;
@@ -17,14 +23,16 @@ function getAllRoutes(dir, fileArray = []) {
 exports.option = {
   swaggerDefinition: {
     info: {
-      description: '프로젝트 설명을 입력해주세요.',
-      title: '프로젝트명을 입력해주세요.',
+      description: `${PROJECT} API 서버(${
+        process.env.NODE_ENV || 'development'
+      }) 테스트용 Swagger입니다.`,
+      title: '${PROJECT} API',
       version: '1.0.0',
     },
-    host: `${process.env.SWAGGER_HOST}:${process.env.PORT}/${process.env.API_VERSION}`,
-    basePath: '',
+    host: `${process.env.SWAGGER_HOST}`,
+    basePath: `/${process.env.API_VERSION}`,
     produces: ['application/json', 'multipart/form-data'],
-    consumes: ['multipart/form-data'],
+    consumes: ['application/json', 'multipart/form-data'],
     schemes: ['http', 'https'],
     // securityDefinitions: {
     //   bearer: {
@@ -37,7 +45,7 @@ exports.option = {
     // security: [{ bearer: [] }],
   },
   basedir: process.env.PWD,
-  files: getAllRoutes('./routes/'),
+  files: getAllRoutes('./modules/'),
   route: {
     url: `/${process.env.API_VERSION}/api-docs`,
     docs: `/${process.env.API_VERSION}/api-docs.json`,

@@ -1,11 +1,8 @@
 process.env.PWD = __dirname;
-
 require('dotenv').config();
-const fs = require('fs');
 const app = require('./config/express');
-const statusCode = require('./config/statusCode');
 
-app.set('port', process.env.PORT || 8001);
+app.set('port', process.env.PORT || 8004);
 let isDisableKeepAlive = false;
 app.use((req, res, next) => {
   if (isDisableKeepAlive) {
@@ -15,16 +12,11 @@ app.use((req, res, next) => {
 });
 
 // 에러 핸들링
-app.use((err, req, res, next) => {
-  console.error(err);
-  const error = statusCode[err.message] || statusCode.FINAL;
-  res.status(error.code).json(error);
-  if (req.files) {
-    req.files.forEach(file => {
-      fs.unlinkSync(file.path);
-    });
-  }
-  return;
+app.use(async (err, req, res, next) => {
+  const status = err?.status || 500;
+  const message = err?.message || '서버 개발자에게 문의해주세요.';
+  const code = err?.code || 'INTERNAL_SERVER_ERROR';
+  return res.status(status).json({ message, code });
 });
 
 // 서버 프로세스 시작
@@ -32,6 +24,8 @@ const server = app.listen(app.get('port'), () => {
   process.send('ready');
   console.log(`Server started on port ${app.get('port')}`);
 });
+
+server.setTimeout(5000);
 
 // 처리되지 않은 에러 핸들링
 process.on('unhandledRejection', (reason, promise) => {
