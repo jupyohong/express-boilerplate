@@ -25,8 +25,8 @@
     "express-swagger-generator": "^1.1.17",
     "formidable": "^1.2.2",
     "joi": "^17.4.2",
+    "knex": "^0.95.15",
     "morgan": "^1.10.0",
-    "mysql2": "^2.2.5",
     "redis": "^3.1.2",
     "sharp": "^0.29.1",
     "uuid": "^8.3.2"

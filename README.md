@@ -188,7 +188,6 @@ module.exports = {
 
 ```js
 // 예시
-
 router
   .route('/')
   /**
