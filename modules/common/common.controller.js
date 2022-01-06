@@ -1,5 +1,5 @@
 const {} = require('./common.service');
-const { getSignedUrlResized, getSignedUrlOrig } = require('../utils/s3');
+const { getSignedUrlResized, getSignedUrlOrig } = require('../../utils/s3');
 
 const getS3PresignedUrl = async (req, res) => {
   const { folder, fileId } = req.params;

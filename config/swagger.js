@@ -23,7 +23,7 @@ function getAllRoutes(dir, fileArray = []) {
 exports.option = {
   swaggerDefinition: {
     info: {
-      description: `${PROJECT} API 서버(${
+      description: `${process.env.PROJECT_NAME} API 서버(${
         process.env.NODE_ENV || 'development'
       }) 테스트용 Swagger입니다.`,
       title: '${PROJECT} API',

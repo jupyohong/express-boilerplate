@@ -21,7 +21,9 @@ app.use(async (err, req, res, next) => {
 
 // 서버 프로세스 시작
 const server = app.listen(app.get('port'), () => {
-  process.send('ready');
+  if (process.send) {
+    process.send('ready');
+  }
   console.log(`Server started on port ${app.get('port')}`);
 });
 

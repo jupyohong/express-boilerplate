@@ -11,6 +11,8 @@
 로컬 환경, 또는 필요에 따라 클라우드 환경 변수에 값을 채워넣습니다.
 
 ```sh
+# 프로젝트 설정
+PROJECT_NAME=express-boilerplate
 API_VERSION=v1  # API 버전
 SWAGGER_HOST=localhost  # Swagger 도메인
 

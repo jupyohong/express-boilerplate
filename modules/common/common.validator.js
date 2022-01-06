@@ -1,6 +1,6 @@
 const Joi = require('joi'); // npm i joi
 
-const CustomError = require('../config/CustomError');
+const CustomError = require('../../config/CustomError');
 
 exports.pageInfoSchema = Joi.object({
   query: Joi.object({
