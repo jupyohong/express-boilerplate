@@ -1,5 +1,5 @@
 const formidable = require('formidable');
-const { v4: uuid } = require('uuid');
+// const { v4: uuid } = require('uuid');
 
 module.exports = async function formidableParser(req, res, next) {
   let contentType = req.headers['content-type'];
@@ -13,14 +13,7 @@ module.exports = async function formidableParser(req, res, next) {
         next(err);
         return;
       }
-      if (files?.file) {
-        if (Array.isArray(files.file)) {
-          req.file = files.file[0];
-        } else {
-          req.file = files.file;
-        }
-        req.file.fileId = uuid();
-      }
+      req.files = files;
       req.body = fields;
       return next();
     });

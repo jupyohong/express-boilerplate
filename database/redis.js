@@ -1,16 +1,51 @@
-const Redis = require('redis');
-const { promisify } = require('util');
+const { createClient } = require('redis');
 
-const redis = Redis.createClient({
-  host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT,
+const client = createClient({
+  url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
   password: process.env.REDIS_PASS,
 });
 
-redis.getAsync = promisify(redis.get).bind(redis);
-redis.hgetAsync = promisify(redis.hget).bind(redis);
-redis.setexAsync = promisify(redis.setex).bind(redis);
-redis.existsAsync = promisify(redis.exists).bind(redis);
-redis.delAsync = promisify(redis.del).bind(redis);
+client.on('error', err => console.error('Redis client error', err));
 
-module.exports = redis;
+// Get the value of a key
+const get = async key => {
+  try {
+    await client.connect();
+    const value = await client.get(key);
+    return value;
+  } catch (err) {
+    throw new Error('REDIS_ERROR');
+  } finally {
+    await client.quit();
+  }
+};
+
+// Set the value and expiration of a key
+const setEx = async (key, seconds, value) => {
+  try {
+    if (typeof value === 'string' || value instanceof String) {
+      await client.connect();
+      await client.setEx(key, seconds, value);
+    } else {
+      throw new Error('INVALID_TYPE');
+    }
+  } catch (err) {
+    throw new Error('REDIS_ERROR');
+  } finally {
+    await client.quit();
+  }
+};
+
+// Delete a key
+const del = async key => {
+  try {
+    await client.connect();
+    await client.del(key);
+  } catch (err) {
+    throw new Error('REDIS_ERROR');
+  } finally {
+    await client.quit();
+  }
+};
+
+module.exports = { get, setEx, del };
